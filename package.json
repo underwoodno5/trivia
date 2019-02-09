@@ -1,0 +1,23 @@
+{
+  "name": "trivia",
+  "version": "1.0.0",
+  "description": "Fun little application for playing trivia with friends",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "author": "alltheveg",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-datasource-rest": "^0.2.2",
+    "apollo-server": "^2.3.3",
+    "axios": "^0.18.0",
+    "express": "^4.16.4",
+    "express-graphql": "^0.7.1",
+    "graphql": "^14.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
