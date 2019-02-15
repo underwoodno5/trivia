@@ -6,7 +6,7 @@ class TriviaApi extends RESTDataSource {
     this.baseURL = 'https://opentdb.com/api.php';
   }
   async getAllTrivia() {
-    const response = await this.get('?amount=10');
+    const response = await this.get('?amount=1&type=multiple');
     return response;
     // ? response.map(question => this.questionReducer(question))
     //: [];

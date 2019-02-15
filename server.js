@@ -4,6 +4,7 @@ const typeDefs = require('./schema');
 const { ApolloServer } = require('apollo-server');
 const QuestionAPI = require('./datasources/question');
 const resolvers = require('./resolvers');
+const cors = require('cors');
 
 //const schema = require('./schema');
 
@@ -16,7 +17,7 @@ const server = new ApolloServer({
 });
 
 server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+  console.log(`Server ready at ${url}`);
 });
 
 /*const app = express();
