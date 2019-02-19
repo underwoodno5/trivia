@@ -1,3 +1,38 @@
+body {
+  background-color: #24326bfc;
+}
+
+.title {
+  margin-top: 2rem;
+}
+
+h1 {
+  font-family: 'Nunito', sans-serif;
+  text-shadow: 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
+    0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
+    0 20px 20px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+  font-size: 1rem;
+  font-family: 'Oxygen', sans-serif;
+  color: #e88697;
+}
+
+.answers-container h2 {
+  border-bottom: 1px solid #e886973b;
+}
+
+h3 {
+  text-align: center;
+}
+.question p {
+  font-size: 1.6rem;
+  transition: height 0.5s;
+  min-height: 76px;
+}
+
 .App {
   text-align: center;
 }
@@ -5,8 +40,7 @@
 .trivia-container {
   width: 50%;
   height: 35rem;
-  background-color: red;
-  margin: 6rem auto;
+  margin: 5rem auto;
 }
 
 button {
@@ -24,9 +58,21 @@ button {
   z-index: -1;
 }
 
+.hide {
+  display: none !important;
+}
+
 .score-container {
   display: flex;
   justify-content: space-around;
+}
+
+.score {
+  border: 1px solid #e886973b;
+  padding: 2rem;
+  margin-top: 1.3rem;
+  border-radius: 15%;
+  text-align: center;
 }
 
 .correct-answer {
@@ -74,6 +120,146 @@ button {
 }
 
 .flipcard__face--back {
-  background: blue;
+  background: #df691a;
   transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.incorrect {
+  text-align: center;
+}
+
+.incorrect p {
+  display: inline;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.incorrect h3 {
+  display: inline;
+}
+
+/*Button*/
+.flipbutton {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  background-color: #008cba;
+  margin: 0 auto;
+  display: block;
+  border: none;
+  color: white;
+  box-shadow: 4px 4px 16px #00000099;
+}
+
+.flipbutton:hover {
+  background-color: #008cba9e;
+  color: white;
+}
+
+/* checkmark */
+.checkmark {
+  width: 56px;
+  height: 56px;
+  margin: 2rem auto;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #7ac142;
+  animation: fillgreen 0.4s ease-in-out 0.4s forwards,
+    scale 0.3s ease-in-out 0.9s both;
+}
+
+.exmark {
+  width: 56px;
+  height: 56px;
+  margin: 2rem auto;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #c14242;
+  animation: fillred 0.4s ease-in-out 0.4s forwards,
+    scale 0.3s ease-in-out 0.9s both;
+}
+
+.checkmark__circle,
+.exmark_circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__circle {
+  stroke: #7ac142;
+}
+.exmark__circle {
+  stroke: #c14242;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes scale {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+@keyframes fillgreen {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #7ac142;
+  }
+}
+
+@keyframes fillred {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #c14242;
+  }
+}
+
+/* MOBILE STUFFFFFS */
+@media only screen and (max-width: 600px) {
+  body {
+    margin: 0 10px;
+  }
+  .trivia-container {
+    width: 100%;
+    margin-top: 3rem;
+  }
+
+  .question p {
+    font-size: 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .incorrect h3 {
+    font-size: 1.1rem;
+  }
+
+  .incorrect p {
+    font-size: 1rem;
+  }
 }

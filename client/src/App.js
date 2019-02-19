@@ -13,7 +13,7 @@ class App extends Component {
     return (
       <ApolloProvider client={client}>
         <div className='App'>
-          <h1 className='title'>Trivia</h1>
+          <h1 className='title'>A SIMPLE TRIVIA GAME</h1>
         </div>
         <Answers />
       </ApolloProvider>
