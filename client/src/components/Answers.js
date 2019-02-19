@@ -151,7 +151,7 @@ export class Answers extends Component {
                           className='btn-primary correctanswer'
                           style={{ order: this.state.firstAnswerOrder }}
                         >
-                          {he.decode(correct_answer)} correct
+                          {he.decode(correct_answer)}
                         </button>
                         <button
                           key={incorrect_answers[0]}
