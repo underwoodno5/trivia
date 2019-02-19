@@ -175,6 +175,59 @@ export class Answers extends Component {
                       Next Question
                     </button>
                   </div>
+                  <div class='scene scene--card'>
+                    <div class='flipcard'>
+                      <div class='flipcard__face flipcard__face--front'>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            this.correctAnswer();
+                            this.toggle();
+                          }}
+                          className='btn-primary'
+                          style={{ order: this.state.firstAnswerOrder }}
+                        >
+                          {he.decode(correct_answer)} correct
+                        </button>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            this.toggle();
+                            this.wrongAnswer();
+                          }}
+                          className='btn-primary'
+                          style={{ order: this.state.secondAnswerOrder }}
+                        >
+                          {he.decode(incorrect_answers[0])}
+                        </button>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            this.toggle();
+                            this.wrongAnswer();
+                          }}
+                          className='btn-primary'
+                          style={{ order: this.state.secondAnswerOrder }}
+                        >
+                          {he.decode(incorrect_answers[1])}
+                        </button>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            this.toggle();
+                            this.wrongAnswer();
+                          }}
+                          className='btn-primary'
+                          style={{ order: this.state.secondAnswerOrder }}
+                        >
+                          {he.decode(incorrect_answers[2])}
+                        </button>
+                      </div>
+                      <div class='flipcard__face flipcard__face--back'>
+                        back
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )
             );
@@ -190,13 +243,6 @@ export class Answers extends Component {
             {this.state.counterTeamB}
           </div>
         </div>
-        <div class='scene scene--card'>
-          <div class='card'>
-            <div class='card__face card__face--front'>front</div>
-            <div class='card__face card__face--back'>back</div>
-          </div>
-        </div>
-        <p>Click card to flip.</p>
       </div>
     );
   }
