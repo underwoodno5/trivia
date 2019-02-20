@@ -46,6 +46,7 @@ h3 {
 button {
   margin: 0;
   padding: 1rem 1rem;
+  border: none;
 }
 
 .answers-container {
@@ -114,7 +115,6 @@ button {
 }
 
 .flipcard__face--front {
-  background: green;
   display: flex;
   flex-direction: column;
 }
