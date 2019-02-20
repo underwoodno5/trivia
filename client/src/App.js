@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
+import { render } from 'react-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import './App.css';
 import Answers from './components/Answers';
 
 const client = new ApolloClient({
-  uri: '/graphql'
+  uri: '/'
 });
 
-class App extends Component {
-  render() {
-    return (
-      <ApolloProvider client={client}>
-        <div className='App'>
-          <h1 className='title'>A SIMPLE TRIVIA GAME</h1>
-        </div>
-        <Answers />
-      </ApolloProvider>
-    );
-  }
-}
+const App = () => (
+  <ApolloProvider client={client}>
+    <div className='App'>
+      <h1 className='title'>A SIMPLE TRIVIA GAME</h1>
+    </div>
+    <Answers />
+  </ApolloProvider>
+);
+
+render(<App />, document.getElementById('root'));
 
 export default App;
