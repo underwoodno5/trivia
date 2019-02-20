@@ -16,7 +16,6 @@ app.get('*', (req, res) => {
 
 const server = new ApolloServer({
   cors: true,
-  playground: true,
   introspection: true,
   typeDefs,
   resolvers,
