@@ -5,7 +5,7 @@ import './App.css';
 import Answers from './components/Answers';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000'
+  uri: '/graphql'
 });
 
 class App extends Component {
