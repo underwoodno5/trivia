@@ -6,7 +6,7 @@ import './App.css';
 import Answers from './components/Answers';
 
 const client = new ApolloClient({
-  uri: '/'
+  uri: '/graphql'
 });
 
 const App = () => (
