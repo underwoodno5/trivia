@@ -6,8 +6,6 @@ const resolvers = require('./resolvers');
 const server = new ApolloServer({
   cors: true,
   typeDefs,
-  introspection: true,
-  playground: true,
   resolvers,
   dataSources: () => ({
     questionAPI: new QuestionAPI()
