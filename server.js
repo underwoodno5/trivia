@@ -8,6 +8,7 @@ const app = express();
 const path = require('path');
 
 const server = new ApolloServer({
+  introspection: true,
   typeDefs,
   resolvers,
   dataSources: () => ({
