@@ -9,6 +9,7 @@ const path = require('path');
 
 const server = new ApolloServer({
   introspection: true,
+  playground: true,
   typeDefs,
   resolvers,
   dataSources: () => ({
