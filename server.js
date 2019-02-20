@@ -6,6 +6,12 @@ const express = require('express');
 
 const app = express();
 
+app.use(express.static('public'));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
+
 const server = new ApolloServer({
   cors: true,
   playground: true,
@@ -15,12 +21,6 @@ const server = new ApolloServer({
   dataSources: () => ({
     questionAPI: new QuestionAPI()
   })
-});
-
-app.use(express.static('public'));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
