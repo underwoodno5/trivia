@@ -12,10 +12,12 @@ const AnswersQuery = gql`
         correct_answer
         incorrect_answers
         question
+        category
       }
     }
   }
 `;
+localStorage.setItem('number', 9);
 
 export class Answers extends Component {
   constructor(props) {
@@ -23,12 +25,15 @@ export class Answers extends Component {
     this.state = {
       counterTeamA: 0,
       counterTeamB: 0,
+      teamAName: 'Team A',
+      teamBName: 'Team B',
       addClass: false,
       correctAnswer: false,
       incorrectAnswer: false,
       correctStore: '',
       flipCard: false,
       turnA: true,
+      showModal: false,
       firstAnswerOrder: Math.floor(Math.random() * 10),
       secondAnswerOrder: Math.floor(Math.random() * 10),
       thirdAnswerOrder: Math.floor(Math.random() * 10),
@@ -39,12 +44,25 @@ export class Answers extends Component {
     this.correctAnswer = this.correctAnswer.bind(this);
     this.wrongAnswer = this.wrongAnswer.bind(this);
     this.random = this.random.bind(this);
+    this.scoreReset = this.scoreReset.bind(this);
+    this.modal = this.modal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   //toggling state for visible objects
   toggle() {
-    this.setState({ addClass: !this.state.addClass });
-    this.setState({ flipCard: !this.state.flipCard });
+    this.setState({
+      addClass: !this.state.addClass,
+      flipCard: !this.state.flipCard
+    });
+  }
+
+  //toggle modal
+  modal() {
+    this.setState({
+      showModal: !this.state.showModal
+    });
+    console.log(this.state.showModal);
   }
 
   //toggling state for visible objects and randomising
@@ -54,6 +72,13 @@ export class Answers extends Component {
       secondAnswerOrder: Math.floor(Math.random() * 10),
       thirdAnswerOrder: Math.floor(Math.random() * 10),
       fourthAnswerOrder: Math.floor(Math.random() * 10)
+    });
+  }
+
+  scoreReset() {
+    this.setState({
+      counterTeamA: 0,
+      counterTeamB: 0
     });
   }
 
@@ -100,6 +125,18 @@ export class Answers extends Component {
     this.setState({ incorrectAnswer: !this.state.incorrectAnswer });
   }
 
+  //handle form enter
+  handleSubmit(event) {
+    console.log('yes');
+    event.preventDefault();
+    this.setState({
+      teamAName: this.elementA.value,
+      teamBName: this.elementB.value,
+      showModal: !this.state.showModal
+    });
+    
+  }
+
   render() {
     let fadeClass = ['answers-container'];
     if (this.state.addClass) {
@@ -120,6 +157,12 @@ export class Answers extends Component {
     if (!this.state.incorrectAnswer) {
       showIncorrect.push('hide');
     }
+    let modalOpen = ['modal'];
+    if (!this.state.showModal) {
+      modalOpen.push('hide-modal');
+    }
+
+    console.log('the name is ' + JSON.stringify(localStorage.getItem('name')));
 
     return (
       <div className='trivia-container'>
@@ -128,11 +171,11 @@ export class Answers extends Component {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error</p>;
             return data.questions.results.map(
-              ({ correct_answer, incorrect_answers, question }) => (
+              ({ correct_answer, incorrect_answers, question, category }) => (
                 <div>
                   <div className={fadeClass.join(' ')}>
                     <div className='question' key={question}>
-                      <h2>-question</h2>
+                      <h2>-{category}</h2>
                       <p>{he.decode(question)}</p>
                     </div>
                     <h2>-answers</h2>
@@ -271,16 +314,54 @@ export class Answers extends Component {
           }}
         </Query>
 
+        <div>
+          <div className='options'>
+            <button onClick={this.modal}>
+              <i className='fas fa-cog' />
+            </button>
+          </div>
+          <div className={modalOpen.join(' ')}>
+            <div className='modal-content'>
+              <span className='close'>
+                <button onClick={this.modal}>&times;</button>
+              </span>
+              <form onSubmit={this.handleSubmit}>
+              <label className="col-form-label col-form-label-sm" for="inputSmall">Team Names</label>
+                <input
+                  type='text'
+                  name='teamA'
+                  className='form-control form-control-sm'
+                  ref={el => (this.elementA = el)}
+                />
+                <input
+                  type='text'
+                  name='teamB'
+                  className='form-control form-control-sm'
+                  ref={el => (this.elementB = el)}
+                />
+                <input type='submit' value='Submit' className='btn btn-primary' />
+              </form>
+              <button
+          className='score-reset btn btn-danger'
+          onClick={this.scoreReset}
+        >
+          Reset scores
+        </button>
+            </div>
+          </div>
+        </div>
+
         <div className='score-container'>
           <div className='score'>
-            <h2>Team A</h2>
+            <h2>{this.state.teamAName}</h2>
             {this.state.counterTeamA}
           </div>
           <div className='score'>
-            <h2>Team B</h2>
+            <h2>{this.state.teamBName}</h2>
             {this.state.counterTeamB}
           </div>
         </div>
+        
       </div>
     );
   }

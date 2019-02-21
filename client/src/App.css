@@ -47,6 +47,7 @@ button {
   margin: 0;
   padding: 1rem 1rem;
   border: none;
+  outline: none;
 }
 
 .answers-container {
@@ -74,6 +75,8 @@ button {
   margin-top: 1.3rem;
   border-radius: 15%;
   text-align: center;
+  min-width: 7rem;
+  overflow: hidden;
 }
 
 .correct-answer {
@@ -85,6 +88,12 @@ button {
   text-align: center;
   padding-top: 6rem;
   transition: opacity 0.5s;
+}
+
+.score-reset {
+  border-radius: 5px;
+  margin: 2rem auto;
+  display: block;
 }
 
 /* FLIPPING STUFF*/
@@ -139,6 +148,90 @@ button {
 
 .incorrect h3 {
   display: inline;
+}
+
+/*options button*/
+.options {
+  position: absolute;
+  top: 0.5rem;
+  right: 2.3rem;
+}
+
+.options button {
+  background: none;
+  color: #e58697;
+  font-size: 1.3rem;
+  outline: none;
+}
+/* The Modal (background) */
+.modal {
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  display: block;
+}
+
+.hide-modal {
+  display: none;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #6678d8;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  color: rgb(22, 22, 22);
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  position: absolute;
+  font-size: 28px;
+  font-weight: bold;
+  top: 0;
+  right: 10px;
+}
+.close button {
+  background: none;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content label {
+  margin-top: 2rem;
+  color: #f5f2f2;
+}
+
+.modal-content input {
+  margin-bottom: 1rem;
+}
+
+/* Add Animation */
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 /*Button*/
@@ -261,5 +354,12 @@ button {
 
   .incorrect p {
     font-size: 1rem;
+  }
+  .modal-content {
+    width: 80%;
+  }
+  .options {
+    top: -15px;
+    right: 0;
   }
 }
