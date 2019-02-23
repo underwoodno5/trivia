@@ -6,21 +6,11 @@ class TriviaApi extends RESTDataSource {
     this.baseURL = 'https://opentdb.com/api.php';
   }
 
-  async getAllTrivia() {
-    const response = await this.get(`?amount=1&type=multiple`);
+  getAllTrivia(args) {
+    const list = args.categories;
+    const item = list[Math.floor(Math.random() * list.length)];
+    const response = this.get(`?amount=1&type=multiple&category=${item}`);
     return response;
-    // ? response.map(question => this.questionReducer(question))
-    //: [];
-  }
-  questionReducer(question) {
-    return {
-      category: question.results.category,
-      difficulty: question.results.difficulty,
-      question: question.results.question,
-      correct_answer: question.results.correct_answer,
-      incorrect_answers: question.results.incorrect_answers,
-      response_code: question.response_code
-    };
   }
 }
 

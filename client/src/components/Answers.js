@@ -6,8 +6,8 @@ import he from 'he';
 
 //---------- GraphQL Query
 const AnswersQuery = gql`
-  {
-    questions {
+  query Questions($categories: [Int]) {
+    questions(categories: $categories) {
       results {
         correct_answer
         incorrect_answers
@@ -17,7 +17,6 @@ const AnswersQuery = gql`
     }
   }
 `;
-localStorage.setItem('number', 9);
 
 export class Answers extends Component {
   constructor(props) {
@@ -33,7 +32,10 @@ export class Answers extends Component {
       correctStore: '',
       flipCard: false,
       turnA: true,
+      categories: [12, 9, 10, 11],
+      list: [12, 9, 10, 11],
       showModal: false,
+      checked: true,
       firstAnswerOrder: Math.floor(Math.random() * 10),
       secondAnswerOrder: Math.floor(Math.random() * 10),
       thirdAnswerOrder: Math.floor(Math.random() * 10),
@@ -47,6 +49,7 @@ export class Answers extends Component {
     this.scoreReset = this.scoreReset.bind(this);
     this.modal = this.modal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.check = this.check.bind(this);
   }
 
   //toggling state for visible objects
@@ -55,6 +58,7 @@ export class Answers extends Component {
       addClass: !this.state.addClass,
       flipCard: !this.state.flipCard
     });
+    console.log(this.state.categories);
   }
 
   //toggle modal
@@ -93,13 +97,11 @@ export class Answers extends Component {
   //Adding one to score and changing team state
   correctAnswer() {
     if (this.state.turnA) {
-      console.log('turnA is true');
       this.setState({
         counterTeamA: this.state.counterTeamA + 1,
         turnA: false
       });
     } else {
-      console.log('turnA is false');
       this.setState({
         counterTeamB: this.state.counterTeamB + 1,
         turnA: true
@@ -112,12 +114,10 @@ export class Answers extends Component {
   //changing team state
   wrongAnswer() {
     if (this.state.turnA) {
-      console.log('turnA is true');
       this.setState({
         turnA: false
       });
     } else {
-      console.log('turnA is false');
       this.setState({
         turnA: true
       });
@@ -127,14 +127,36 @@ export class Answers extends Component {
 
   //handle form enter
   handleSubmit(event) {
-    console.log('yes');
     event.preventDefault();
     this.setState({
       teamAName: this.elementA.value,
       teamBName: this.elementB.value,
       showModal: !this.state.showModal
     });
-    
+  }
+
+  check(event) {
+    const array = this.state.list;
+    const number = parseInt(event.target.value);
+
+    if (this.state.checked) {
+      console.log('uncheck');
+      const index = array.indexOf(number);
+      if (index > -1) {
+        array.splice(index, 1);
+      }
+      this.setState({
+        checked: false
+      });
+      console.log(array);
+    } else {
+      console.log('check');
+      array.push(number);
+      this.setState({
+        checked: true
+      });
+      console.log(array);
+    }
   }
 
   render() {
@@ -161,12 +183,10 @@ export class Answers extends Component {
     if (!this.state.showModal) {
       modalOpen.push('hide-modal');
     }
-
-    console.log('the name is ' + JSON.stringify(localStorage.getItem('name')));
-
+    const { categories } = this.state;
     return (
       <div className='trivia-container'>
-        <Query query={AnswersQuery}>
+        <Query query={AnswersQuery} variables={{ categories }}>
           {({ loading, error, data, refetch }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error</p>;
@@ -308,6 +328,34 @@ export class Answers extends Component {
                       </div>
                     </div>
                   </div>
+                  <div className='form-group'>
+                    <div className='custom-control custom-switch'>
+                      <input
+                        type='checkbox'
+                        className='custom-control-input'
+                        id='customSwitch2'
+                        defaultChecked
+                        onChange={this.check}
+                        value={9}
+                      />
+                      <label
+                        className='custom-control-label'
+                        htmlFor='customSwitch2'
+                      >
+                        General Knowledge
+                      </label>
+                      <button
+                        type='button'
+                        onClick={() =>
+                          this.setState({
+                            categories: this.state.list
+                          })
+                        }
+                      >
+                        Set
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )
             );
@@ -326,7 +374,9 @@ export class Answers extends Component {
                 <button onClick={this.modal}>&times;</button>
               </span>
               <form onSubmit={this.handleSubmit}>
-              <label className="col-form-label col-form-label-sm" for="inputSmall">Team Names</label>
+                <label className='col-form-label col-form-label-sm'>
+                  Team Names
+                </label>
                 <input
                   type='text'
                   name='teamA'
@@ -339,14 +389,18 @@ export class Answers extends Component {
                   className='form-control form-control-sm'
                   ref={el => (this.elementB = el)}
                 />
-                <input type='submit' value='Submit' className='btn btn-primary' />
+                <input
+                  type='submit'
+                  value='Submit'
+                  className='btn btn-primary'
+                />
               </form>
               <button
-          className='score-reset btn btn-danger'
-          onClick={this.scoreReset}
-        >
-          Reset scores
-        </button>
+                className='score-reset btn btn-danger'
+                onClick={this.scoreReset}
+              >
+                Reset scores
+              </button>
             </div>
           </div>
         </div>
@@ -361,7 +415,6 @@ export class Answers extends Component {
             {this.state.counterTeamB}
           </div>
         </div>
-        
       </div>
     );
   }

@@ -2,7 +2,9 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Query {
-    questions: Question!
+    questions(categories: [Int]): Question!
+    favoriteColor: AllowedColor
+    avatar(borderColor: Int): Int
   }
 
   type Question {
@@ -16,6 +18,12 @@ const typeDefs = gql`
     difficulty: String
     incorrect_answers: [String]
     correct_answer: String
+  }
+
+  enum AllowedColor {
+    RED
+    GREEN
+    BLUE
   }
 `;
 
