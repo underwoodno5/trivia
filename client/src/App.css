@@ -150,6 +150,24 @@ button {
   display: inline;
 }
 
+.form-group {
+  margin-bottom: 1rem;
+  display: none;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  opacity: 1;
+  transition: opacity 2s;
+}
+
+.show-categories {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content label {
+  margin-right: 2rem;
+}
+
 /*options button*/
 .options {
   position: absolute;

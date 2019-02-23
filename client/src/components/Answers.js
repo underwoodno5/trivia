@@ -32,8 +32,60 @@ export class Answers extends Component {
       correctStore: '',
       flipCard: false,
       turnA: true,
-      categories: [12, 9, 10, 11],
-      list: [12, 9, 10, 11],
+      showCategories: false,
+      categories: [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      list: [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      isChecked: null,
       showModal: false,
       checked: true,
       firstAnswerOrder: Math.floor(Math.random() * 10),
@@ -50,6 +102,10 @@ export class Answers extends Component {
     this.modal = this.modal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.check = this.check.bind(this);
+    this.submitCategories = this.submitCategories.bind(this);
+    this.resetCategories = this.resetCategories.bind(this);
+    this.reCheck = this.reCheck.bind(this);
+    this.nullCheck = this.nullCheck.bind(this);
   }
 
   //toggling state for visible objects
@@ -138,25 +194,97 @@ export class Answers extends Component {
   check(event) {
     const array = this.state.list;
     const number = parseInt(event.target.value);
-
-    if (this.state.checked) {
+    const index = array.indexOf(number);
+    if (index > -1) {
       console.log('uncheck');
-      const index = array.indexOf(number);
-      if (index > -1) {
-        array.splice(index, 1);
-      }
-      this.setState({
-        checked: false
-      });
-      console.log(array);
+      array.splice(index, 1);
     } else {
       console.log('check');
       array.push(number);
-      this.setState({
-        checked: true
-      });
-      console.log(array);
     }
+    array.sort(function(a, b) {
+      return a - b;
+    });
+  }
+
+  submitCategories() {
+    const array = this.state.list;
+    this.state.categories.sort(function(a, b) {
+      return a - b;
+    });
+    this.state.categories = array;
+    this.setState({
+      showCategories: false
+    });
+  }
+
+  resetCategories() {
+    this.setState({
+      list: [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      categories: [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ]
+    });
+  }
+
+  reCheck() {
+    this.setState({
+      isChecked: true,
+      showCategories: true
+    });
+  }
+  nullCheck() {
+    this.setState({
+      isChecked: null
+    });
   }
 
   render() {
@@ -183,7 +311,14 @@ export class Answers extends Component {
     if (!this.state.showModal) {
       modalOpen.push('hide-modal');
     }
+
+    let showCat = ['form-group'];
+    if (this.state.showCategories) {
+      showCat.push('show-categories');
+    }
+
     const { categories } = this.state;
+
     return (
       <div className='trivia-container'>
         <Query query={AnswersQuery} variables={{ categories }}>
@@ -328,34 +463,6 @@ export class Answers extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className='form-group'>
-                    <div className='custom-control custom-switch'>
-                      <input
-                        type='checkbox'
-                        className='custom-control-input'
-                        id='customSwitch2'
-                        defaultChecked
-                        onChange={this.check}
-                        value={9}
-                      />
-                      <label
-                        className='custom-control-label'
-                        htmlFor='customSwitch2'
-                      >
-                        General Knowledge
-                      </label>
-                      <button
-                        type='button'
-                        onClick={() =>
-                          this.setState({
-                            categories: this.state.list
-                          })
-                        }
-                      >
-                        Set
-                      </button>
-                    </div>
-                  </div>
                 </div>
               )
             );
@@ -364,14 +471,25 @@ export class Answers extends Component {
 
         <div>
           <div className='options'>
-            <button onClick={this.modal}>
+            <button
+              onClick={() => {
+                this.modal();
+              }}
+            >
               <i className='fas fa-cog' />
             </button>
           </div>
           <div className={modalOpen.join(' ')}>
             <div className='modal-content'>
               <span className='close'>
-                <button onClick={this.modal}>&times;</button>
+                <button
+                  onClick={() => {
+                    this.modal();
+                    this.submitCategories();
+                  }}
+                >
+                  &times;
+                </button>
               </span>
               <form onSubmit={this.handleSubmit}>
                 <label className='col-form-label col-form-label-sm'>
@@ -401,6 +519,427 @@ export class Answers extends Component {
               >
                 Reset scores
               </button>
+              <button
+                className='score-reset btn btn-info'
+                onClick={() => {
+                  this.resetCategories();
+                  this.reCheck();
+                  setTimeout(this.nullCheck);
+                }}
+              >
+                Select Categories
+              </button>
+
+              <div className={showCat.join(' ')}>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch0'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={9}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch0'
+                  >
+                    General Knowledge
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch1'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={10}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch1'
+                  >
+                    Books
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch2'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={11}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch2'
+                  >
+                    Films
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch3'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={12}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch3'
+                  >
+                    Music
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch4'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={13}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch4'
+                  >
+                    Musicals and Theatres
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch5'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={14}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch5'
+                  >
+                    TV
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch6'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={15}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch6'
+                  >
+                    Video Games
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch7'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={16}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch7'
+                  >
+                    Board Games
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch8'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={17}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch8'
+                  >
+                    Science and Nature
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch9'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={18}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch9'
+                  >
+                    Science: Computers
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch10'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={19}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch10'
+                  >
+                    Science: Mathematics
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch11'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={20}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch11'
+                  >
+                    Mythology
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch12'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={21}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch12'
+                  >
+                    Sports
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch13'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={22}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch13'
+                  >
+                    Geography
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch14'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={23}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch14'
+                  >
+                    History
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch15'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={24}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch15'
+                  >
+                    Politics
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch16'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={25}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch16'
+                  >
+                    Art
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch17'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={26}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch17'
+                  >
+                    Celebrities
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch18'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={27}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch18'
+                  >
+                    Animals
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch19'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={28}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch19'
+                  >
+                    Vehicles
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch20'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={29}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch20'
+                  >
+                    Comics
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch21'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={30}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch21'
+                  >
+                    Science: Gadgets
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch22'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={31}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch22'
+                  >
+                    Anime
+                  </label>
+                </div>
+                <div className='custom-control custom-switch'>
+                  <input
+                    type='checkbox'
+                    className='custom-control-input'
+                    id='customSwitch23'
+                    defaultChecked
+                    checked={this.state.isChecked}
+                    onChange={this.check}
+                    value={32}
+                  />
+                  <label
+                    className='custom-control-label'
+                    htmlFor='customSwitch23'
+                  >
+                    Cartoons
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
