@@ -89,10 +89,13 @@ button {
   padding-top: 6rem;
   transition: opacity 0.5s;
 }
-
+.option-buttons {
+  display: flex;
+  justify-content: center;
+}
 .score-reset {
   border-radius: 5px;
-  margin: 2rem auto;
+  margin: 2rem;
   display: block;
 }
 
@@ -155,13 +158,13 @@ button {
   display: none;
   flex-wrap: wrap;
   justify-content: space-around;
-  opacity: 1;
-  transition: opacity 2s;
+  opacity: 0;
 }
 
 .show-categories {
+  animation: fadein 0.5s forwards;
+  animation-delay: 0.2s;
   display: flex;
-  opacity: 1;
 }
 
 .modal-content label {
@@ -202,7 +205,7 @@ button {
 /* Modal Content/Box */
 .modal-content {
   background-color: #6678d8;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 7% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
@@ -321,7 +324,7 @@ button {
   stroke-dashoffset: 48;
   animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
-
+/* animation */
 @keyframes stroke {
   100% {
     stroke-dashoffset: 0;
@@ -345,6 +348,14 @@ button {
 @keyframes fillred {
   100% {
     box-shadow: inset 0px 0px 0px 30px #c14242;
+  }
+}
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
@@ -374,7 +385,7 @@ button {
     font-size: 1rem;
   }
   .modal-content {
-    width: 80%;
+    width: 90%;
   }
   .options {
     top: -15px;

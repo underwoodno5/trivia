@@ -106,6 +106,7 @@ export class Answers extends Component {
     this.resetCategories = this.resetCategories.bind(this);
     this.reCheck = this.reCheck.bind(this);
     this.nullCheck = this.nullCheck.bind(this);
+    this.showCategories = this.showCategories.bind(this);
   }
 
   //toggling state for visible objects
@@ -212,8 +213,8 @@ export class Answers extends Component {
     this.state.categories.sort(function(a, b) {
       return a - b;
     });
-    this.state.categories = array;
     this.setState({
+      categories: array,
       showCategories: false
     });
   }
@@ -273,6 +274,17 @@ export class Answers extends Component {
         32
       ]
     });
+  }
+
+  showCategories() {
+    if (!this.state.showCategories) {
+      this.resetCategories();
+      this.reCheck();
+      setTimeout(this.nullCheck);
+    } else {
+      this.modal();
+      this.submitCategories();
+    }
   }
 
   reCheck() {
@@ -513,22 +525,20 @@ export class Answers extends Component {
                   className='btn btn-primary'
                 />
               </form>
-              <button
-                className='score-reset btn btn-danger'
-                onClick={this.scoreReset}
-              >
-                Reset scores
-              </button>
-              <button
-                className='score-reset btn btn-info'
-                onClick={() => {
-                  this.resetCategories();
-                  this.reCheck();
-                  setTimeout(this.nullCheck);
-                }}
-              >
-                Select Categories
-              </button>
+              <div className='option-buttons'>
+                <button
+                  className='score-reset btn btn-danger'
+                  onClick={this.scoreReset}
+                >
+                  Reset scores
+                </button>
+                <button
+                  className='score-reset btn btn-info'
+                  onClick={this.showCategories}
+                >
+                  Select Categories
+                </button>
+              </div>
 
               <div className={showCat.join(' ')}>
                 <div className='custom-control custom-switch'>
